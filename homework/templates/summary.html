@@ -5,9 +5,13 @@
 
     <!-- TODO: Display summary statistics -->
     <!-- these lines were added in -->
-    <p>Total students: {{ total_students }}</p>
-    <p>Average grade: {{ average_grade | round(2) }}</p>
-    <p>Highest grade: {{ highest_grade }}</p>
-    <p>Lowest grade: {{ lowest_grade }}</p>
+    {% if context.error %}
+        <p>{{ context.error }}</p>
+    {% else %}
+        <p>Total students: {{ context.total_students }}</p>
+        <p>Average grade: {{ context.average_grade | round(2) }}</p>
+        <p>Highest grade: {{ context.highest_grade }}</p>
+        <p>Lowest grade: {{ context.lowest_grade }}</p>
+    {% endif %}
 
 {% endblock %}

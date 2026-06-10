@@ -59,20 +59,30 @@ def display_students():
 # ---------------------------------
 @app.route("/summary")
 def summary():
-    error = None
+    if not students:
+        return render_template("summary.html", context={
+            "error": "There are no students *in a friendly way*",
+            "total_students": 0,
+            "average_grade": 0,
+            "highest_grade": 0,
+            "lowest_grade": 0
+        })
     # TODO:
     # Calculate:
     # - total students
     total_students = len(students)
-    # - average grade
-    average_grade = sum(students) / total_students
-    # - highest grade
-    highest_grade = max(students)
-    # - lowest grade
-    lowest_grade = min(students)
-    if not students:
-        error = "There are no students *in a friendly way*"
-    context={"total_students": total_students, "average_grade": average_grade, "highest_grade": highest_grade, "lowest_grade": lowest_grade, "error": error}
+    grades = [int(s["grade"]) for s in students]
+
+    average_grade = sum(grades) / total_students
+    highest_grade = max(grades)
+    lowest_grade = min(grades)
+
+    context = {
+        "total_students": total_students,
+        "average_grade": average_grade,
+        "highest_grade": highest_grade,
+        "lowest_grade": lowest_grade
+    }
     return render_template("summary.html", context=context)
 
 
