@@ -24,12 +24,23 @@ def add_student():
 
         # TODO:
         # 1. Validate name
+        if not name:
+            error = "Please enter a name"
         # 2. Validate grade is number
-        # 3. Validate grade range 0–100
-        # 4. Add to students list as dictionary
-        # 5. Redirect to /students
+        elif not grade:
+            error = "Please enter a grade"
+        elif not grade.isnumeric():
+            error = "Please enter an integer for the grade"
+    # 3. Validate grade range 0–100
+        elif int(grade) < 0 or int(grade) > 100:
+            error = "Grade must be between 0 and 100"
+    # 4. Add to students list as dictionary
+    # 5. Redirect to /students
+        elif error is None:
+            students.append({"name": name, "grade": grade})
+            return redirect(url_for("display_students"))
 
-        pass
+
 
     return render_template("add.html", error=error)
 
@@ -39,6 +50,7 @@ def add_student():
 # ---------------------------------
 @app.route("/students")
 def display_students():
+
     return render_template("students.html", students=students)
 
 
@@ -47,14 +59,31 @@ def display_students():
 # ---------------------------------
 @app.route("/summary")
 def summary():
+    if not students:
+        return render_template("summary.html", context={
+            "error": "There are no students *in a friendly way*",
+            "total_students": 0,
+            "average_grade": 0,
+            "highest_grade": 0,
+            "lowest_grade": 0
+        })
     # TODO:
     # Calculate:
     # - total students
-    # - average grade
-    # - highest grade
-    # - lowest grade
+    total_students = len(students)
+    grades = [int(s["grade"]) for s in students]
 
-    return render_template("summary.html")
+    average_grade = sum(grades) / total_students
+    highest_grade = max(grades)
+    lowest_grade = min(grades)
+
+    context = {
+        "total_students": total_students,
+        "average_grade": average_grade,
+        "highest_grade": highest_grade,
+        "lowest_grade": lowest_grade
+    }
+    return render_template("summary.html", context=context)
 
 
 if __name__ == "__main__":
