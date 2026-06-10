@@ -4,5 +4,10 @@
     <h2>Summary</h2>
 
     <!-- TODO: Display summary statistics -->
+    <!-- these lines were added in -->
+    <p>Total students: {{ total_students }}</p>
+    <p>Average grade: {{ average_grade | round(2) }}</p>
+    <p>Highest grade: {{ highest_grade }}</p>
+    <p>Lowest grade: {{ lowest_grade }}</p>
 
 {% endblock %}
